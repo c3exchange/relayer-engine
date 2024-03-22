@@ -9,6 +9,7 @@ import {
   getSignedVAAWithRetry,
   ParsedVaa,
   SignedVaa,
+  tryNativeToHexString,
 } from "@certusone/wormhole-sdk";
 import {
   compose,
@@ -567,6 +568,7 @@ class ChainRouter<ContextT extends Context> {
 
   /**
    * Specify an address in native format (eg base58 for solana) and a set of middleware to run when we receive a VAA from that address
+   * The address will be stored in encoded format (emitter seed prefixed). Use addressNaked() if you want to use a literal address.
    * @param address
    * @param handlers
    */
@@ -585,6 +587,28 @@ class ChainRouter<ContextT extends Context> {
     }
     return this;
   };
+
+   /**
+   * Specify an address in native format (eg base58 for solana) and a set of middleware to run when we receive a VAA from that address
+   * This wont encode the address prefixing the "emitter"  seed, use address() if you want to use encoded address.
+   * @param address
+   * @param handlers
+   */
+    addressNaked = (
+      address: string,
+      ...handlers: Middleware<ContextT>[]
+    ): ChainRouter<ContextT> => {
+      address = tryNativeToHexString(address, this.chainId);
+      if (!this._addressHandlers[address]) {
+        this._addressHandlers[address] = compose(handlers);
+      } else {
+        this._addressHandlers[address] = compose([
+          this._addressHandlers[address],
+          ...handlers,
+        ]);
+      }
+      return this;
+    };
 
   spyFilters(): { emitterFilter: ContractFilter }[] {
     let addresses = Object.keys(this._addressHandlers);
