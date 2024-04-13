@@ -6,6 +6,7 @@ import {
   ProvidersOpts,
   sourceTx,
   SourceTxContext,
+  SourceTxOpts,
   spawnMissedVaaWorker,
   stagingArea,
   StagingAreaContext,
@@ -91,6 +92,7 @@ export class StandardRelayerApp<
   constructor(
     env: Environment,
     opts: MakeOptional<StandardRelayerAppOpts, FullDefaultOpts>,
+    customSourceTxOpts?: SourceTxOpts,
   ) {
     // take logger out before merging because of recursive call stack
     const logger = opts.logger ?? defaultLogger;
@@ -183,7 +185,7 @@ export class StandardRelayerApp<
       }),
     );
     if (options.fetchSourceTxhash) {
-      this.use(sourceTx());
+      this.use(sourceTx(customSourceTxOpts));
     }
   }
 
