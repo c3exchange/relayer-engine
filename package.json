@@ -1,6 +1,6 @@
 {
-  "name": "@wormhole-foundation/relayer-engine",
-  "version": "0.3.2",
+  "name": "@c3exchange/relayer-engine",
+  "version": "0.3.3",
   "description": "Relayer Engine",
   "type": "module",
   "main": "lib/cjs/relayer/index.js",
@@ -30,7 +30,7 @@
       "default": "./lib/esm/relayer/*.js"
     }
   },
-  "author": "Joe Howarth, xLabs Inc.",
+  "author": "Joe Howarth, xLabs Inc., c3",
   "license": "Apache-2.0",
   "dependencies": {
     "@bull-board/api": "^5.8.1",
