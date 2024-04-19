@@ -161,7 +161,6 @@ export class RedisStorage implements Storage {
       },
       {
         jobId: id,
-        removeOnFail: 50000,
         attempts: this.opts.attempts,
         ...retryStrategy,
       },

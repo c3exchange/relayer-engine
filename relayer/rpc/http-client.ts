@@ -10,6 +10,7 @@ export class HttpClient {
   private retries: number = 0;
   private timeout: number = 5_000;
   private cache: RequestCache = "default";
+  private headers: HeadersInit = new Headers();
 
   constructor(options?: HttpClientOptions) {
     options?.initialDelay && (this.initialDelay = options.initialDelay);
@@ -17,6 +18,7 @@ export class HttpClient {
     options?.retries && (this.retries = options.retries);
     options?.timeout && (this.timeout = options.timeout);
     options?.cache && (this.cache = options.cache);
+    options?.headers && (this.headers = options.headers);
   }
 
   public async get<T>(url: string, opts?: HttpClientOptions): Promise<T> {
@@ -34,7 +36,8 @@ export class HttpClient {
         method: method,
         signal: AbortSignal.timeout(opts?.timeout ?? this.timeout),
         cache: opts?.cache ?? this.cache,
-      });
+        headers: opts?.headers ?? this.headers,
+      })
     } catch (err) {
       // Connection / timeout error:
       throw new HttpClientError(printError(err));
@@ -96,6 +99,7 @@ export type HttpClientOptions = {
   retries?: number;
   timeout?: number;
   cache?: RequestCache;
+  headers?: HeadersInit
 };
 
 export class HttpClientError extends Error {

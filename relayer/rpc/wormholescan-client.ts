@@ -31,6 +31,9 @@ export class WormholescanClient implements Wormholescan {
       initialDelay: defaultOptions?.initialDelay,
       maxDelay: defaultOptions?.maxDelay,
       cache: defaultOptions?.noCache ? "no-cache" : "default",
+      headers: defaultOptions?.apiKey ? {
+        "X-API-KEY": defaultOptions.apiKey
+      } : {},
     });
   }
 
@@ -39,6 +42,7 @@ export class WormholescanClient implements Wormholescan {
     emitterAddress: string,
     opts?: WormholescanOptions,
   ): Promise<WormholescanResult<WormholescanVaa[]>> {
+    const useOpts = opts ?? this.defaultOptions;
     try {
       const response = await this.client.get<{
         data: WormholescanVaaResponse[];
@@ -47,7 +51,7 @@ export class WormholescanClient implements Wormholescan {
           this.baseUrl
         }api/v1/vaas/${chain}/${emitterAddress}?page=${this.getPage(
           opts,
-        )}&pageSize=${this.getPageSize(opts)}`,
+        )}&pageSize=${this.getPageSize(useOpts)}`,
         opts,
       );
 
@@ -70,12 +74,13 @@ export class WormholescanClient implements Wormholescan {
     sequence: bigint,
     opts?: WormholescanOptions,
   ): Promise<WormholescanResult<WormholescanVaa>> {
+    const useOpts = opts ?? this.defaultOptions;
     try {
       const response = await this.client.get<{ data: WormholescanVaaResponse }>(
         `${
           this.baseUrl
         }api/v1/vaas/${chain}/${emitterAddress}/${sequence.toString()}`,
-        opts,
+        useOpts,
       );
       return {
         data: {
@@ -94,12 +99,13 @@ export class WormholescanClient implements Wormholescan {
     sequence: bigint,
     opts?: WormholescanOptions,
   ): Promise<WormholescanResult<WormholescanTransaction>> {
+    const useOpts = opts ?? this.defaultOptions;
     try {
       const response = await this.client.get<WormholescanTransaction>(
         `${
           this.baseUrl
         }api/v1/transactions/${chain}/${emitterAddress}/${sequence.toString()}`,
-        opts,
+        useOpts,
       );
 
       return {
@@ -135,6 +141,7 @@ export type WormholescanOptions = {
   maxDelay?: number;
   timeout?: number;
   noCache?: boolean;
+  apiKey?: string
 };
 
 /**

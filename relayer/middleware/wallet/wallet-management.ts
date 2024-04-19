@@ -8,6 +8,15 @@ import { Logger } from "winston";
 import { ethers } from "ethers";
 
 import {
+  CHAIN_ID_ARBITRUM,
+  CHAIN_ID_ARBITRUM_SEPOLIA,
+  CHAIN_ID_AVAX,
+  CHAIN_ID_BASE,
+  CHAIN_ID_FANTOM,
+  CHAIN_ID_OPTIMISM,
+  CHAIN_ID_POLYGON,
+  CHAIN_ID_SEI,
+  CHAIN_ID_SUI,
   CHAIN_ID_BSC,
   CHAIN_ID_CELO,
   CHAIN_ID_ETH,
@@ -16,18 +25,9 @@ import {
   ChainId,
   coalesceChainName,
   isEVMChain,
+  CHAIN_ID_SEPOLIA,
 } from "@certusone/wormhole-sdk";
 
-import {
-  CHAIN_ID_ARBITRUM,
-  CHAIN_ID_AVAX,
-  CHAIN_ID_BASE,
-  CHAIN_ID_FANTOM,
-  CHAIN_ID_OPTIMISM,
-  CHAIN_ID_POLYGON,
-  CHAIN_ID_SEI,
-  CHAIN_ID_SUI,
-} from "@certusone/wormhole-sdk/lib/cjs/utils/consts.js";
 import { Environment } from "../../environment.js";
 
 export type MetricsOptions =
@@ -50,6 +50,7 @@ const networks = {
   [Environment.TESTNET]: {
     [CHAIN_ID_ETH]: "goerli",
     [CHAIN_ID_SOLANA]: "solana-devnet",
+    [CHAIN_ID_SEPOLIA]: "sepolia",
     [CHAIN_ID_AVAX]: "testnet",
     [CHAIN_ID_CELO]: "alfajores",
     [CHAIN_ID_BSC]: "testnet",

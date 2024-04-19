@@ -16,6 +16,7 @@ import { printError } from "../utils.js";
 
 export interface SourceTxOpts {
   wormscanEndpoint: string;
+  wormscanApiKey?: string;
   retries: number;
   initialDelay: number;
   maxDelay: number;
@@ -29,6 +30,7 @@ export interface SourceTxContext extends Context {
 const defaultOptsByEnv = {
   [Environment.MAINNET]: {
     wormscanEndpoint: defaultWormscanUrl[Environment.MAINNET],
+    wormscanApiKey: undefined,
     retries: 5,
     initialDelay: 1_000,
     maxDelay: 45_000,
@@ -36,6 +38,7 @@ const defaultOptsByEnv = {
   },
   [Environment.TESTNET]: {
     wormscanEndpoint: defaultWormscanUrl[Environment.TESTNET],
+    wormscanApiKey: undefined,
     retries: 3,
     initialDelay: 1_000,
     maxDelay: 30_000,
@@ -43,6 +46,7 @@ const defaultOptsByEnv = {
   },
   [Environment.DEVNET]: {
     wormscanEndpoint: defaultWormscanUrl[Environment.DEVNET],
+    wormscanApiKey: undefined,
     retries: 3,
     initialDelay: 500,
     maxDelay: 10_000,
@@ -134,6 +138,7 @@ export async function fetchVaaHash(
       initialDelay: opts.initialDelay,
       maxDelay: opts.maxDelay,
       timeout: opts.timeout,
+      apiKey: opts.wormscanApiKey,
     });
   }
 

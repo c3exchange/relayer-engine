@@ -41,6 +41,9 @@ export interface MissedVaaOpts extends RedisConnectionOpts {
   logger?: Logger;
   wormholeRpcs: string[];
   wormscanUrl?: string;
+
+  wormscanApiKey?: string;
+
   // How many "source" chains will be scanned for missed VAAs concurrently.
   concurrency?: number;
   // Interval at which the worker will check for missed VAAs.
@@ -96,6 +99,7 @@ export async function spawnMissedVaaWorker(
   const wormholescan = new WormholescanClient(new URL(opts.wormscanUrl), {
     maxDelay: 60_000,
     noCache: true,
+    apiKey: opts.wormscanApiKey,
   });
 
   if (!app.filters.length) {
